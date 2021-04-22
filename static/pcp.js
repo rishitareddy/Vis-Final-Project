@@ -12,6 +12,19 @@
   //     }
   //          }) ;
 
+var states = ""
+$.ajax({
+           type: "GET",
+           url: "/most_common_states",
+           traditional: "true",
+           dataType: "json",
+           async : false,
+           success: function (data) {
+             states = Object.keys(data);
+      },error: function(error){
+        console.log("parallel coordinates common states error ",error);
+      }
+           }) ;
 
     var margin = 0;
     var margin_bottom = 100;
@@ -37,17 +50,24 @@ var line = d3.line(),
     background,
     foreground;
 
-var Categorical = ['Geography','State','Encounter_Type','Victim_race'];
+var Categorical = ['Geography','Encounter_Type','Victim_race'];
 
-var myArray = ['Geography', 'State', 'Victim_age', 'Victim_race', 'Encounter_Type'];
+var myArray = ['Geography','State', 'Victim_age', 'Victim_race', 'Encounter_Type'];
 
 // var myArray = ['Geography', 'Victim_age', 'Victim_race', 'State'];
 
 
-  d3.csv("PFDataset2.csv", function(data) {
+  d3.csv("https://raw.githubusercontent.com/rishitareddy/Vis-Final-Project/master/templates/PFDataset2.csv?token=AF5FPASLEKTCOIBSNCHDK33ARISZY", function(data) {
+
+  // d3.csv("../templates/PFDataset2.csv", function(data) {
+
 
   x.domain(dimensions = d3.keys(data[0]).filter(function(d) {
-    if(Categorical.includes(d)){
+    if(d == 'State'){
+      y[d] = d3.scalePoint().domain(states)
+                                        .range([height, 0])
+    }
+    else if(Categorical.includes(d)){
 
       y[d] = d3.scalePoint().domain(data.map(item => item[d]))
                                         .range([height, 0])

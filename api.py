@@ -16,27 +16,44 @@ attributes = ['Geography','Victim_age','Victim_race','Date_of_Incident','State',
 
 df = pd.DataFrame(data=dataframe, columns = attributes)
 
+Police_Killings_By_PD = pd.read_csv('templates/Police_Killings_By_PD.csv')
+
+attributes_by_pd = ['City','Avg_Annual_Police_Homicide_Rate','Violent_Crime_Rate']
+
+df_PdKillings = pd.DataFrame(data=Police_Killings_By_PD, columns = attributes_by_pd)
+
 @app.route('/')
 def home():
-    list1 = df['State'].tolist()
-    c = Counter(list1)
-    print(c.most_common(10))
     return render_template('index.html')
-
-@app.route('/kmeans-labels', methods=['GET'])
-def getKmeansClusters():
-    clusterDict={}
-    kmLabels = KMeans(n_clusters = 3).fit(df).labels_
-    clusterDict["clusters"] = kmLabels.tolist()
-    return jsonify(clusterDict)
+#
+# @app.route('/kmeans-labels', methods=['GET'])
+# def getKmeansClusters():
+#     clusterDict={}
+#     kmLabels = KMeans(n_clusters = 3).fit(df).labels_
+#     clusterDict["clusters"] = kmLabels.tolist()
+#     return jsonify(clusterDict)
 
 # @app.route('/areachart',methods = ['GET'])
 # def getStackedData():
 
+@app.route("/most_common_states", methods=['GET'])
+def getMostCommonStates():
+    stateList = df['State'].tolist()
+    stateDict = dict(Counter(stateList).most_common(10))
+    return stateDict
 
+@app.route("/sorted_killings_by_pd", methods=['GET'])
+def getSortedHomicideRates():
+    df.columns=df.columns.str.strip()
+    sorted_killings_by_pd = df_PdKillings.sort_values(by=['Violent_Crime_Rate'],ascending=False).head(int(df.shape[0]*.2)).to_dict()
+    scatterplot_dict = {}
+    scatterplot_dict["homicide_rate"] = list(sorted_killings_by_pd['Avg_Annual_Police_Homicide_Rate'].values())
+    scatterplot_dict["city"] = list(sorted_killings_by_pd['City'].values())
+    scatterplot_dict["violent_crime_rate"] = list(sorted_killings_by_pd['Violent_Crime_Rate'].values())
 
+    print(scatterplot_dict)
 
-    return render_template('index.html', )
+    return jsonify(scatterplot_dict)
 
 @app.route('/mds-correlation',methods = ['GET'])
 def getCorrelationMds():
@@ -60,4 +77,4 @@ def getCorrelationMds():
     return jsonify(mdsCorrelation_dict)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port = 5031)

@@ -1,3 +1,24 @@
+var homicide_rate = ""
+var city = ""
+var sorted_violent_crime_rate = ""
+
+$.ajax({
+           type: "GET",
+           url: "/sorted_killings_by_pd",
+           traditional: "true",
+           dataType: "json",
+           async : false,
+           success: function (data) {
+             homicide_rate = data.homicide_rate;
+             city = data.city;
+             sorted_violent_crime_rate = data.violent_crime_rate;
+             console.log("Scatterplot ", city);
+      },error: function(error){
+        console.log("scatterplot killings by pd error ",error);
+      }
+           }) ;
+
+
     // set the dimensions and margins of the graph
     var margin = {top: 20, right: 40, bottom: 30, left: 70},
         width = 200 ;
@@ -14,11 +35,11 @@
               "translate(" + margin.left + "," + margin.top + ")");
 
     //Read the data
-    d3.csv("Police_Killings_By_PD.csv", function(data) {
+    d3.csv("https://raw.githubusercontent.com/rishitareddy/Vis-Final-Project/master/templates/Police_Killings_By_PD.csv?token=AF5FPAURO4ETXDHJXUJAJELARIWJ6", function(data) {
 
      var x = d3.scaleBand()
      // .domain(data.sort(function(a, b) { if(a.Avg_Annual_Police_Homicide_Rate >= b.Avg_Annual_Police_Homicide_Rate) return a.City; }))
-     .domain(data.map(function(d) { return d.City; }))
+     .domain(city)
      .rangeRound([0, width]);
 
      var y0 = d3.scaleLinear()
@@ -83,25 +104,25 @@
       // Add dots
       svg.append('g')
         .selectAll("dot")
-        .data(data)
+        .data(city)
         .enter()
         .append("circle")
-          .attr("cx", function (d) { return x(d.City); } )
-          .attr("cy", function (d) { return y1(d.Avg_Annual_Police_Homicide_Rate); } )
+          .attr("cx", function (d) { return x(d); } )
+          .attr("cy", function(d,i){ return y1(homicide_rate[i]); })
           .attr("r", 2.0)
-          .style("fill", "#0069B2");
+          .style("fill", "red");
 
 
           // Add dots
           svg.append('g')
             .selectAll("dot")
-            .data(data)
+            .data(city)
             .enter()
             .append("circle")
-              .attr("cx", function (d) { return x(d.City); } )
-              .attr("cy", function (d) { return y0(d.Violent_Crime_Rate); } )
+              .attr("cx", function (d) { return x(d); } )
+              .attr("cy", function (d,i) { return y0(sorted_violent_crime_rate[i]); } )
               .attr("r", 2.0)
-              .style("fill", "red");
+              .style("fill", "#0069B2");
 
 
 
