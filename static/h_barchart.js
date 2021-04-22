@@ -18,12 +18,12 @@ d3.csv("PFDataset1.csv", function(data) {
 
 // count how much each gender occurs in list and store in countObj
 data.forEach(function(d) {
-     
+
   if(countObj[d.State] == undefined) {
       countObj[d.State] = 0;
   } else {
       countObj[d.State] = countObj[d.State] + 1;
-      
+
   }
 });
 // now store the count in each data member
@@ -32,9 +32,18 @@ data.forEach(function(d) {
   // console.log(d.count);
 });
 
+
+data.sort(function(b, a) {
+  return a.count - b.count;
+
+});
+
+data = data.slice(1,10)
+
+
   // Add X axis
   var x = d3.scaleLinear()
-    .domain([0,d3.max(data, function(d) { return d.count; })])   
+    .domain([0,d3.max(data, function(d) { return d.count; })])
     .range([ 0, width]);
   svg.append("g")
     .attr("transform", "translate(0," + height + ")")
