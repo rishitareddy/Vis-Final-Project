@@ -29,9 +29,9 @@ $.ajax({
 
     var margin = 0;
     var margin_bottom = 100;
-    margin = {top: 30, right: 30, bottom: margin_bottom, left: 50},
-    width = 600 - margin.left - margin.right,
-    height = 350 - margin.top - margin.bottom;
+    margin = {top: 30, right: 10, bottom: margin_bottom, left: 0},
+    width = 620 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
     var svg = d3.select("#mypcp")
     .append("svg")

@@ -33,12 +33,12 @@ def home():
 #     clusterDict["clusters"] = kmLabels.tolist()
 #     return jsonify(clusterDict)
 
-@app.route('/top10states',methods =['GET']) 
+@app.route('/top10states',methods =['GET'])
 def  get_states():
 
     list1 = df['State'].tolist()
     c = Counter(list1)
-   
+
     popular = c.most_common(10)
 
     data = {}
@@ -88,4 +88,4 @@ def getSortedHomicideRates():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port = 5157)
+    app.run(debug=True, port = 5194)

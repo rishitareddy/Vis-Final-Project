@@ -101,7 +101,7 @@ var data = [
 
 
 
-var width = 500;
+var width = 450;
 var height = 300;
 var margin = 50;
 var duration = 250;
@@ -170,7 +170,7 @@ lines.selectAll('.line-group')
         .style("fill", color(i))
         .text(d.name)
         .attr("text-anchor", "middle")
-        .attr("x", (width-margin)/2)
+        .attr("x", 900)
         .attr("y", (height+margin) - 40);
     })
   .on("mouseout", function(d) {
@@ -277,8 +277,8 @@ svg.append("g")
     .data(data)
     .enter()
     .append("rect")
-      .attr("x", 400)
-      .attr("y", function(d,i){ return 10 + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
+      .attr("x", 330)
+      .attr("y", function(d,i){ return i*(size+5) - 3}) // 100 is where the first dot appears. 25 is the distance between dots
       .attr("width", size)
       .attr("height", size)
       .style("fill", function(d,i){ return color(i)})
@@ -288,8 +288,8 @@ svg.append("g")
     .data(keys)
     .enter()
     .append("text")
-      .attr("x", 400 + size*1.2)
-      .attr("y", function(d,i){ return 10 + i*(size+5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
+      .attr("x", 330 + size*1.2)
+      .attr("y", function(d,i){ return i*(size+5) + (size/2) - 3}) // 100 is where the first dot appears. 25 is the distance between dots
       .style("fill", function(d,i){ return color(i)})
       .text(function(d){ return d})
       .attr("text-anchor", "left")
