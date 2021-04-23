@@ -51,7 +51,13 @@ function hbarchart(data){
       .call(d3.axisBottom(x))
       .selectAll("text")
         .attr("transform", "translate(-10,0)rotate(-45)")
-        .style("text-anchor", "end");
+        .style("text-anchor", "end")
+        .append("text")
+            .attr("transform",
+                  "translate(" + (width/2) + " ," +
+                                 (height + margin.top + 15) + ")")
+            .style("text-anchor", "middle")
+            .text("Total Killings");
 
     // Y axis
     var y = d3.scaleBand()
@@ -60,7 +66,12 @@ function hbarchart(data){
       .padding(.1);
     svg.append("g")
       .call(d3.axisLeft(y))
-
+          .append("text")
+            .attr("text-anchor", "end")
+            .attr("transform", "rotate(-90)")
+            .attr("y", -margin.left)
+            .attr("x", -margin.top )
+            .text("State")
     //Bars
     svg.selectAll("myRect")
       .data(data)

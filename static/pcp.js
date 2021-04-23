@@ -58,7 +58,7 @@ var myArray = ['Geography','State', 'Victim_age', 'Victim_race', 'Encounter_Type
 // var myArray = ['Geography', 'Victim_age', 'Victim_race', 'State'];
 
 
-  d3.csv("https://raw.githubusercontent.com/rishitareddy/Vis-Final-Project/master/templates/PFDataset2.csv?token=AF5FPASLEKTCOIBSNCHDK33ARISZY", function(data) {
+  d3.csv("https://raw.githubusercontent.com/rishitareddy/Vis-Final-Project/master/templates/PFDataset2.csv?token=AF5FPAXDPBHUP22TOXOMLB3ARN3Q4", function(data) {
 
   // d3.csv("../templates/PFDataset2.csv", function(data) {
 
