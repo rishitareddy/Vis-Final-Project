@@ -70,7 +70,7 @@ function hbarchart(data){
       .attr("y", function(d) { return y(d.state); })
       .attr("width", function(d) { return x(d.killingcount); })
       .attr("height", y.bandwidth() )
-      .attr("fill", "#69b3a2")
+      .attr("fill", "#FFC300")
 
 
       // .attr("x", function(d) { return x(d.Country); })

@@ -166,12 +166,13 @@ lines.selectAll('.line-group')
   .attr('class', 'line-group')
   .on("mouseover", function(d, i) {
       svg.append("text")
-        .attr("class", "title-text")
+        // .attr("class", "title-text")
+        .attr("x", 40 -width)
+        .attr("y",40)
         .style("fill", color(i))
         .text(d.name)
-        .attr("text-anchor", "middle")
-        .attr("x", 900)
-        .attr("y", (height+margin) - 40);
+        // .attr("text-anchor", "middle")
+      ;
     })
   .on("mouseout", function(d) {
       svg.select(".title-text").remove();
@@ -255,10 +256,10 @@ svg.append("g")
   .attr("transform", `translate(0, ${height-margin})`)
   .call(xAxis)
   .append('text')
-  .attr("x", width)
-  .attr("y", height+40 )
+  .attr("x", width - 40)
+  .attr("y", - height )
   // .attr("transform", "rotate(-180)")
-  // .attr("fill", "#000")
+  .attr("fill", "#000")
   .text("Year");
 
 svg.append("g")
@@ -267,7 +268,7 @@ svg.append("g")
   .append('text')
   .attr("y", 15)
   .attr("transform", "rotate(-90)")
-  // .attr("fill", "#000")
+  .attr("fill", "#000")
   .text("Total killings");
 
 

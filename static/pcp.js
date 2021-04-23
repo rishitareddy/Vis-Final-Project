@@ -84,7 +84,7 @@ var myArray = ['Geography','State', 'Victim_age', 'Victim_race', 'Encounter_Type
 
 var green_to_blue = d3.scaleLinear()
     .domain([9, 50])
-    .range(["#7AC143", "#00B0DD"])
+    .range(["#E24521", "#E2A321"])
     .interpolate(d3.interpolateLab);
 
 var color = function(d) { return green_to_blue(d['Victim_age']); };
