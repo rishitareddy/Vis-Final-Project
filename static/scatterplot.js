@@ -53,15 +53,29 @@ $.ajax({
 
       svg.append("g")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x))
+        .selectAll("text")
+          .style("text-anchor", "end")
+          .attr("dx", "-.8em")
+          .attr("dy", "-.55em")
+          .attr("transform", "rotate(-90)" );
 
-      // Add X axis label:
-      svg.append("text")
-        .attr("text-anchor", "end")
-        .attr("x", width - 20)
-        .attr("y", height + margin.top + 15)
-        .text("City")
-        .attr("transform", "rotate(-180)" );
+      // // Add X axis label:
+      // svg.append("text")
+      //   .attr("text-anchor", "end")
+      //   .attr("x", width - 20)
+      //   .attr("y", height + margin.top + 15)
+      //   .text("City")
+      //   .attr("transform", "rotate(-180)" );
+
+
+        svg.append("text")
+            .attr("transform",
+                  "translate(" + (width/2) + " ," +
+                                 (height + margin.top + 15) + ")")
+            .style("text-anchor", "middle")
+            .text("City")
+
 
 
       // Add Y axis

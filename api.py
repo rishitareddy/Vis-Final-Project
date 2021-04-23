@@ -50,14 +50,17 @@ def getMostCommonStates():
 @app.route("/sorted_killings_by_pd", methods=['GET'])
 def getSortedHomicideRates():
     df.columns=df.columns.str.strip()
-    sorted_killings_by_pd = df_PdKillings.sort_values(by=['Violent_Crime_Rate'],ascending=False).head(int(df.shape[0]*.2)).to_dict()
+    sorted_killings_by_pd = df_PdKillings.sort_values(by=['Violent_Crime_Rate'],ascending=False)
+    sliced_sorted_killings = sorted_killings_by_pd.head(25).to_dict()
+    # sliced_sorted_killings = sliced_sorted_killings.append(sorted_killings_by_pd.tail(10)).to_dict()
     scatterplot_dict = {}
-    scatterplot_dict["homicide_rate"] = list(sorted_killings_by_pd['Avg_Annual_Police_Homicide_Rate'].values())
-    scatterplot_dict["city"] = list(sorted_killings_by_pd['City'].values())
-    scatterplot_dict["violent_crime_rate"] = list(sorted_killings_by_pd['Violent_Crime_Rate'].values())
+    scatterplot_dict["homicide_rate"] = list(sliced_sorted_killings['Avg_Annual_Police_Homicide_Rate'].values())
+    scatterplot_dict["city"] = list(sliced_sorted_killings['City'].values())
+    scatterplot_dict["violent_crime_rate"] = list(sliced_sorted_killings['Violent_Crime_Rate'].values())
 
+    print(scatterplot_dict)
     return jsonify(scatterplot_dict)
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port = 5153)
+    app.run(debug=True, port = 5157)
