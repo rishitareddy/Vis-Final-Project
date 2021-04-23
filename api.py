@@ -33,8 +33,13 @@ def home():
 #     clusterDict["clusters"] = kmLabels.tolist()
 #     return jsonify(clusterDict)
 
-# @app.route('/areachart',methods = ['GET'])
-# def getStackedData():
+@app.route('/areachart',methods = ['GET'])
+def getStackedData():
+    groupedData = df.groupby(['Year', 'Victim_race']).size().reset_index(name="Count")
+    pivotedData = groupedData.pivot('Year', 'Victim_race', 'Count')
+    print(pivotedData)
+    print(pivotedData.to_json())
+    return pivotedData.to_json()
 
 @app.route("/most_common_states", methods=['GET'])
 def getMostCommonStates():
@@ -51,30 +56,8 @@ def getSortedHomicideRates():
     scatterplot_dict["city"] = list(sorted_killings_by_pd['City'].values())
     scatterplot_dict["violent_crime_rate"] = list(sorted_killings_by_pd['Violent_Crime_Rate'].values())
 
-    print(scatterplot_dict)
-
     return jsonify(scatterplot_dict)
 
-@app.route('/mds-correlation',methods = ['GET'])
-def getCorrelationMds():
-
-    corrmat = df.corr()
-
-    corr_dmatrix = 1 - abs(corrmat)
-    mdsCorrelation = MDS(n_components=2,dissimilarity='precomputed').fit(corr_dmatrix).embedding_
-
-    xcoord = []
-    ycoord = []
-    for sublist in mdsCorrelation:
-        xcoord.append(sublist[0])
-        ycoord.append(sublist[1])
-
-    mdsCorrelation_dict = {}
-    mdsCorrelation_dict["xcoord"] = xcoord
-    mdsCorrelation_dict["ycoord"] = ycoord
-    mdsCorrelation_dict["attributes"]=attributes
-
-    return jsonify(mdsCorrelation_dict)
 
 if __name__ == '__main__':
-    app.run(debug=True, port = 5031)
+    app.run(debug=True, port = 5153)

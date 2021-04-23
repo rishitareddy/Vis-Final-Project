@@ -127,3 +127,10 @@ $.ajax({
 
 
     })
+
+
+    var size = 10;
+    svg.append("circle").attr("cx",150).attr("cy",10).attr("r", 3).style("fill", "red")
+    svg.append("circle").attr("cx",150).attr("cy",25).attr("r", 3).style("fill", "0069B2")
+    svg.append("text").attr("x", 150 + size *1.2).attr("y", 15).text("Homicide Rate").style("font-size", "15px").attr("alignment-baseline","middle")
+    svg.append("text").attr("x", 150+ size *1.2).attr("y", 30).text("Violent Crime Rate").style("font-size", "15px").attr("alignment-baseline","middle")

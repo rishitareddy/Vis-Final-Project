@@ -1,3 +1,4 @@
+
   // var labels = "";
   // var kclusters = $.ajax({
   //          type: "GET",
@@ -46,7 +47,7 @@ console.log("In here")
     dragging = {};
 
 var line = d3.line(),
-    axis = d3.axisLeft(),
+    axis = d3.axisRight(),
     background,
     foreground;
 

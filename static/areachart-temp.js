@@ -1,3 +1,27 @@
+var pivotedData = ""
+$.ajax({
+           type: "GET",
+           url: "/areachart",
+           traditional: "true",
+           dataType: "json",
+           async : false,
+           success: function (data) {
+            pivotedData = data;
+            // console.log(data)
+            // console.log(pivotedData)
+      },error: function(error){
+        console.log("area chart data error ",error);
+      }
+           }) ;
+
+console.log("Blah blah")
+console.log(pivotedData)
+races = Object.keys(pivotedData)
+yearObj = Object.values(pivotedData)[0]
+console.log(races);
+years = Object.keys(yearObj)
+console.log(years);
+
 var margin = 0;
 var margin_bottom = 100;
 margin = {top: 30, right: 30, bottom: margin_bottom, left: 50},
@@ -11,10 +35,33 @@ var svg = d3.select("#myareachart")
 .append("g")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-
+// d3.csv("https://raw.githubusercontent.com/rishitareddy/Vis-Final-Project/master/templates/PFDataset2.csv?token=AF5FPASLEKTCOIBSNCHDK33ARISZY", function(data) {
+// d3.json(pivotedData, function(data) {
 d3.csv("https://raw.githubusercontent.com/rishitareddy/visualization/main/Killings%20by%20Race.csv?token=AF5FPASEKTGUK4PZMNUKXGTARMKGI", function(data) {
 
-var keys = data.columns.slice(1)
+  var countObj = {};
+
+// data = pivotedData;
+console.log(data);
+// pivotedData.forEach(function(d) {
+//
+// if(countObj[d.Victim_race+d.Year] == undefined) {
+//    countObj[d.Victim_race+d.Year] = 0;
+// } else {
+//       countObj[d.Victim_race+d.Year] = countObj[d.Victim_race+d.Year] + 1;
+// }
+// });
+//
+// data.forEach(function(d) {
+//   d.count = countObj[d.Victim_race+d.Year];
+//
+// });
+
+
+var keys = races;
+
+console.log(keys);
+
 
 data.forEach(function(d){
    d.total = 0;
@@ -58,7 +105,7 @@ console.log("stackedData  ",stackedData  );
 
   // Add Y axis
   var y = d3.scaleLinear()
-  .domain([0,2000])
+  .domain([0,15000])
     .range([ height, 0 ]);
 
   svg.append("g")
@@ -84,9 +131,9 @@ console.log("stackedData  ",stackedData  );
 
   // Area generator
   var area = d3.area()
-    .x(function(d) { return x(d.data.Year); })
-    .y0(function(d) { return y(d[0]); })
-    .y1(function(d) { return y(d[1]); })
+    .x(function(d) { return x(d.data.Date_of_Incident); })
+    .y0(function(d) { return y(d.y0); })
+    .y1(function(d) { return y(d.y0 + d.y); })
 
 	console.log(area)
 
