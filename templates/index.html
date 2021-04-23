@@ -13,7 +13,7 @@
 
   <!-- <div id="my_barchart"></div>  -->
 
-  <!-- <div id="hdata"></div> -->
+  <div id="hdata"></div>
   <!-- <div id="mybarchart"></div> -->
   <!-- <div id = "mypcp"></div> -->
  <div id = "myscatterplot"></div>
@@ -28,10 +28,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
-<script src="../static/scatterplot.js"></script>
+<!--<script src="../static/scatterplot.js"></script>-->
 
 <!-- <script src="../static/v_barchart.js"></script>  -->
-<!-- <script src="../static/h_barchart.js"></script> -->
+ <script src="../static/h_barchart.js"></script> 
 <!-- <script src="../static/areachart.js"></script> -->
 <!-- <script src="../static/multi-linechart.js"></script> -->
 
@@ -39,5 +39,26 @@
 <script src="../static/pcp.js"></script> -->
 <!-- <script src="../static/index.js"></script> -->
 
+<script>
+       
+  $.ajax({
+           type: "GET",
+           url: "/top10states",
+           traditional: "true",
+           dataType: "json",
+           async : false,
+           success: function (data) {
+            
+        console.log(data)
+        console.log(data.states)
+        console.log(data.killingcount)
+        hbarchart(data.data);
+      },error: function(error){
+        console.log("Yep, BarChart error ",error);
+      }
+           }) ;
+        
+  
+  </script>
 
 </html>

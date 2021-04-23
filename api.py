@@ -33,6 +33,31 @@ def home():
 #     clusterDict["clusters"] = kmLabels.tolist()
 #     return jsonify(clusterDict)
 
+@app.route('/top10states',methods =['GET']) 
+def  get_states():
+
+    list1 = df['State'].tolist()
+    c = Counter(list1)
+   
+    popular = c.most_common(10)
+
+    data = {}
+    data["data"] = []
+    data["states"] = []
+    data["killingcount"] = []
+    top10_states = [popular[0] for popular in c.most_common(10)]
+    data["states"] = top10_states
+    top10_killings = [popular[1] for popular in c.most_common(10)]
+    data["killingcount"] = top10_killings
+    for i in range(len(top10_states)):
+        temp = {}
+        temp['state'] = top10_states[i]
+        temp['killingcount'] = top10_killings[i]
+        data["data"].append(temp)
+
+    jsonify(data)
+    return(data)
+
 @app.route('/areachart',methods = ['GET'])
 def getStackedData():
     groupedData = df.groupby(['Year', 'Victim_race']).size().reset_index(name="Count")
