@@ -23,6 +23,8 @@ var circleRadiusHover = 6;
 
 var keys = []
 
+console.log("HEREEEE ", dat);
+
 /* Format Data */
 var parseDate = d3.timeParse("%Y");
 dat.forEach(function(d) {

@@ -99,7 +99,7 @@
 <script>
   $(document).ready(function(){
 
-    json_dictionary = {state : 'New York', race: 'Black'}
+    json_dictionary = {state : '', race: 'Black'}
             var jqxhr = $.ajax({
                      type: "POST",
                      contentType: "text/html;charset=utf-8",
@@ -111,11 +111,11 @@
                     }) ;
                     var response = {valid: jqxhr.statusText,  data: jqxhr.responseText};
 
-                    console.log(response.data)
-                    drawMultiLineChart(response.data)         
+                    var obj = JSON.parse(response.data)
+                    console.log(obj.multi)
+                    drawMultiLineChart(obj)            
                       })
 
-});
 </script>
 
 </html>
