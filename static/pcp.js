@@ -58,7 +58,7 @@ var myArray = ['Geography','State', 'Victim_age', 'Victim_race', 'Encounter_Type
 // var myArray = ['Geography', 'Victim_age', 'Victim_race', 'State'];
 
 
-  d3.csv("https://raw.githubusercontent.com/rishitareddy/Vis-Final-Project/master/templates/PFDataset2.csv?token=AF5FPAXDPBHUP22TOXOMLB3ARN3Q4", function(data) {
+  d3.csv("https://raw.githubusercontent.com/rishitareddy/Vis-Final-Project/master/templates/PFDataset2.csv?token=AF5FPAVX4WY2JYZ653GP4VLAUIHDS", function(data) {
 
   // d3.csv("../templates/PFDataset2.csv", function(data) {
 
@@ -196,6 +196,7 @@ function brush() {
         dimension: d,
         extent: d3.brushSelection(this)
       });
+      console.log(d)
     });
   foreground.style('display', function(d) {
     return actives.every(function(active) {
@@ -203,4 +204,6 @@ function brush() {
       return active.extent[0] <= y[dim](d[dim]) && y[dim](d[dim]) <= active.extent[1];
     }) ? null : 'none';
   });
+
+  console.log(actives)
 }

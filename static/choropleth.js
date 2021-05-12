@@ -35,8 +35,8 @@ var countryById = d3.map();
 
 // we use queue because we have 2 data files to load.
 queue()
-    .defer(d3.json, "us-states.json")
-    .defer(d3.csv, "statesdata.csv", typeAndSet) // process
+    .defer(d3.json, "static/us-states.json")
+    .defer(d3.csv, "static/statesdata.csv", typeAndSet) // process
     .await(loaded);
 
 function typeAndSet(d) {
@@ -84,8 +84,39 @@ function loaded(error, usa, value) {
 			  .style('opacity', 0.8)
 			  .style('stroke-width',0.3);
 		  })
+          .on("click",function(d, i) {
+
+            console.log("In on click ", d.properties.name);
+
+            json_dictionary = {state : d.properties.name, race: 'Black'}
+
+            // resp = ""
+            var jqxhr = $.ajax({
+                     type: "POST",
+                     contentType: "text/html;charset=utf-8",
+                     url: "/get_top_pd",
+                     traditional: "true",
+                     data : JSON.stringify(json_dictionary),
+                     dataType: "application/json",
+                     async : false
+                    //  success: function (response) {
+                    //         dat = response.multi;
+                    //         ext += response.extent
+                    //         variable = response.variable
+                    //         console.log("Data ", response);
+                    //         resp = response
+                    //     }  ,error: function(error){
+                    //                 console.log("Multiline chart error ",error);
+                    //               }
+
+                    }) ;
+                    var response = {valid: jqxhr.statusText,  data: jqxhr.responseText};
+
+                    var obj = JSON.parse(response.data)
+                    console.log(obj.multi)
+                    drawMultiLineChart(obj)         
+        })
         .attr('fill', function(d,i) {
-            console.log(d.properties.name);
             return getColor(d);
         })
         .append("title");

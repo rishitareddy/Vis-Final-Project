@@ -5,26 +5,28 @@
   <meta charset="UTF-8">
   <title>Final Project</title>
   <h2 style ="text-align: center"> Data Analysis of Police Fatality in the United States of America</h2>
-  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="../static/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+
 </head>
 
-<body>
-  
+<body> 
 
   <!-- <div id="my_barchart"></div>  -->
 
   <!-- <div id="hdata"></div> -->
-  <!-- <div id="mybarchart"></div> -->
-  <!-- <div id = "mypcp"></div> -->
+  <!-- <div id="mylinechart"></div> -->
+  <div id = "mypcp"></div>
  <div style="display: flex;justify-content: center;">
     <div style="display:inline-block;">
       <div id="vis"></div>
     </div>
     <div style="display:inline-block;">
-      <div id="my_dataviz"></div>
+      <div id="mypcp"></div>
     </div>
     <div style="display:inline-block;"></div>
-    <div id="horizontalbarchart"></div>
+    <div id="mylinechart"></div>
     </div>
   </div>
   <div style="display: flex;justify-content: center;">
@@ -59,34 +61,61 @@
     
 </body>
 
+
+
     
 
 <!-- <script src="//d3js.org/d3.v3.min.js"></script> -->
-<script src="https://d3js.org/d3.v4.js"></script>
-<script src="//d3js.org/queue.v1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.13.0/d3-legend.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 
  <!-- Color scale -->
  <!-- <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script> -->
 
+ 
+
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="//d3js.org/queue.v1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.13.0/d3-legend.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 <script src="//d3js.org/topojson.v1.min.js"></script>
-<script src="choropleth.js"></script> 
-<script src="d3-tip.js"></script> 
- <!-- <script src="testpiechart.js"></script>
- <script src="hbarchart.js"></script> -->
-<!-- <script src="piechart.js"></script>  -->
+<script src="../static/choropleth.js"></script> 
+<script src="../static/d3-tip.js"></script> 
+ <!-- <script src="testpiechart.js"></script> -->
+ <!-- <script src="hbarchart.js"></script> 
+<script src="piechart.js"></script>  -->
 
 <!-- <script src="../static/scatterplot.js"></script> -->
 
 <!-- <script src="../static/v_barchart.js"></script>  -->
 <!-- <script src="scatterplot.js"></script> -->
-<!-- <script src="choropleth.js"></script>  -->
-<!-- <script src="../static/areachart.js"></script> -->
+<script src="choropleth.js"></script> 
+<script src="../static/multi-linechart.js"></script>
 
 
 <!-- <script src="../static/pcp.js"></script> -->
 <!-- <script src="../static/index.js"></script> -->
 
+<script>
+  $(document).ready(function(){
+
+    json_dictionary = {state : 'New York', race: 'Black'}
+            var jqxhr = $.ajax({
+                     type: "POST",
+                     contentType: "text/html;charset=utf-8",
+                     url: "/get_top_pd",
+                     traditional: "true",
+                     data : JSON.stringify(json_dictionary),
+                     dataType: "application/json",
+                     async : false                 
+                    }) ;
+                    var response = {valid: jqxhr.statusText,  data: jqxhr.responseText};
+
+                    console.log(response.data)
+                    drawMultiLineChart(response.data)         
+                      })
+
+});
+</script>
 
 </html>

@@ -1,105 +1,9 @@
-var data = [
-  {
-    name: "Asian",
-    values: [
-      {date: "2013", count: "18"},
-      {date: "2014", count: "16"},
-      {date: "2015", count: "29"},
-      {date: "2016", count: "14"},
-      {date: "2017", count: "12"},
-      {date: "2018", count: "14"},
-      {date: "2019", count: "18"},
-      {date: "2020", count: "12"},
-      {date: "2021", count: "1"}
-    ]
-  },
-  {
-    name: "Black",
-    values: [
-      {date: "2013", count: "289"},
-      {date: "2014", count: "277"},
-      {date: "2015", count: "305"},
-      {date: "2016", count: "279"},
-      {date: "2017", count: "277"},
-      {date: "2018", count: "263"},
-      {date: "2019", count: "277"},
-      {date: "2020", count: "233"},
-      {date: "2021", count: "51"}
-    ]
-  },
-  {
-    name: "Hispanic",
-    values: [
-      {date: "2013", count: "168"},
-      {date: "2014", count: "182"},
-      {date: "2015", count: "195"},
-      {date: "2016", count: "193"},
-      {date: "2017", count: "255"},
-      {date: "2018", count: "196"},
-      {date: "2019", count: "199"},
-      {date: "2020", count: "165"},
-      {date: "2021", count: "19"}
-    ]
-  },
-  {
-    name: "Native American",
-    values: [
-      {date: "2013", count: "4"},
-      {date: "2014", count: "10"},
-      {date: "2015", count: "13"},
-      {date: "2016", count: "23"},
-      {date: "2017", count: "28"},
-      {date: "2018", count: "20"},
-      {date: "2019", count: "13"},
-      {date: "2020", count: "11"},
-      {date: "2021", count: "4"}
-    ]
-  },
-  {
-    name: "Pacific Islander",
-    values: [
-      {date: "2013", count: "2"},
-      {date: "2014", count: "5"},
-      {date: "2015", count: "4"},
-      {date: "2016", count: "6"},
-      {date: "2017", count: "6"},
-      {date: "2018", count: "10"},
-      {date: "2019", count: "9"},
-      {date: "2020", count: "7"},
-      {date: "2021", count: "0"}
-    ]
-  },
-  {
-    name: "Unknown",
-    values: [
-      {date: "2013", count: "179"},
-      {date: "2014", count: "84"},
-      {date: "2015", count: "13"},
-      {date: "2016", count: "22"},
-      {date: "2017", count: "38"},
-      {date: "2018", count: "141"},
-      {date: "2019", count: "136"},
-      {date: "2020", count: "317"},
-      {date: "2021", count: "136"}
-    ]
-  },
-  {
-    name: "White",
-    values: [
-      {date: "2013", count: "428"},
-      {date: "2014", count: "476"},
-      {date: "2015", count: "543"},
-      {date: "2016", count: "533"},
-      {date: "2017", count: "505"},
-      {date: "2018", count: "501"},
-      {date: "2019", count: "444"},
-      {date: "2020", count: "382"},
-      {date: "2021", count: "97"}
-    ]
-  }
-];
+function drawMultiLineChart(data){
 
-
+console.log("In multiline ", data);
+var dat = data.multi
+var ext = data.extent + 5
+var variable = data.variable
 
 var width = 450;
 var height = 300;
@@ -121,7 +25,7 @@ var keys = []
 
 /* Format Data */
 var parseDate = d3.timeParse("%Y");
-data.forEach(function(d) {
+dat.forEach(function(d) {
   d.values.forEach(function(d) {
     d.date = parseDate(d.date);
     d.count = +d.count;
@@ -129,15 +33,20 @@ data.forEach(function(d) {
   keys.push(d.name)
 });
 
+d3.select("#mylinechart").select("svg").remove();
 
 /* Scale */
 var xScale = d3.scaleTime()
-  .domain(d3.extent(data[0].values, function(d) { return d.date; }))
+  .domain(d3.extent(dat[0].values, function(d) { return d.date; }))
   // .domain(d3.extent(data[0].values, d => d.date))
+  // .domain([2013,2019])
   .range([0, width - margin ]);
 
 var yScale = d3.scaleLinear()
-  .domain([0, 650])
+// .domain(d3.extent(dat[0].values, function(d) { return d.count; }))
+// // .domain(data.map(function(d) { return d.count; }))
+
+  .domain([0, ext])
   .range([height - margin, 0]);
 
   var color = d3.scaleOrdinal()
@@ -161,7 +70,7 @@ let lines = svg.append('g')
   .attr('class', 'lines');
 
 lines.selectAll('.line-group')
-  .data(data).enter()
+  .data(dat).enter()
   .append('g')
   .attr('class', 'line-group')
   .on("mouseover", function(d, i) {
@@ -205,7 +114,7 @@ lines.selectAll('.line-group')
 
 /* Add circles in the line */
 lines.selectAll("circle-group")
-  .data(data).enter()
+  .data(dat).enter()
   .append("g")
   .style("fill", (d, i) => color(i))
   .selectAll("circle")
@@ -271,11 +180,18 @@ svg.append("g")
   .attr("fill", "#000")
   .text("Total killings");
 
+  svg.append("text")
+        .attr("x", (width / 2))             
+        .attr("y", 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")  
+        .style("font-size", "16px") 
+        .style("text-decoration", "underline")  
+        .text(variable);
 
   // Add one dot in the legend for each name.
   var size = 10
   svg.selectAll("myrect")
-    .data(data)
+    .data(dat)
     .enter()
     .append("rect")
       .attr("x", 330)
@@ -295,3 +211,4 @@ svg.append("g")
       .text(function(d){ return d})
       .attr("text-anchor", "left")
       .style("alignment-baseline", "middle")
+    }
