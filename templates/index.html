@@ -4,81 +4,89 @@
 <head>
   <meta charset="UTF-8">
   <title>Final Project</title>
-
-  <link rel="stylesheet" href="../static/main.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
-
+  <h2 style ="text-align: center"> Data Analysis of Police Fatality in the United States of America</h2>
+  <link rel="stylesheet" href="main.css">
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container">
-        <a class="navbar-brand" href="#">
-            <h1 style ="text-align: center"> Data Analysis of Police Fatality in the United States of America</h1>
-          </a>
-      </div>
-    </nav>
+  
 
-
-  <br>
   <!-- <div id="my_barchart"></div>  -->
-
-<div class="container-fluid">
-<div class="row">
-  <div class="col-lg-3" id="hdata"> </div>
-  <div class="col-lg-5" id="mypcp"></div>
-  <div class="col-lg-4" id="mylinechart"></div>
-
-</div>
-</div>
-
 
   <!-- <div id="hdata"></div> -->
   <!-- <div id="mybarchart"></div> -->
   <!-- <div id = "mypcp"></div> -->
- <!-- <div id = "myscatterplot"></div> -->
+ <div style="display: flex;justify-content: center;">
+    <div style="display:inline-block;">
+      <div id="vis"></div>
+    </div>
+    <div style="display:inline-block;">
+      <div id="my_dataviz"></div>
+    </div>
+    <div style="display:inline-block;"></div>
+    <div id="horizontalbarchart"></div>
+    </div>
+  </div>
+  <div style="display: flex;justify-content: center;">
+    <!-- <div style="display:inline-block;">
+      <div id="vis"></div>
+    </div>
+    <div style="display:inline-block;">
+      <div id="my_dataviz"></div>
+    </div>
+    <div style="display:inline-block;"></div> -->
+  </div>
+  
 
-    <!-- <div id="myareachart"></div> -->
-    <!-- <div id="mylinechart"></div> -->
+ 
 
+<!-- Add 2 buttons -->
+<!-- <button onclick="update(data1)">Data 1</button>
+<button onclick="update(data2)">Data 2</button> -->
+
+<br>
+
+<!-- Create a div where the graph will take place -->
+
+<!--         
+ <button onclick="updatebarchart('var1')">Variable 1</button>
+<button onclick="updatebarchart('var2')">Variable 2</button>  -->
+          
+    
+           <!-- <div id = "myscatterplot"></div>  -->
+         
+        
+    
 </body>
 
-<script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
-<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    
 
-<!--<script src="../static/scatterplot.js"></script>-->
+<!-- <script src="//d3js.org/d3.v3.min.js"></script> -->
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="//d3js.org/queue.v1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.13.0/d3-legend.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+
+ <!-- Color scale -->
+ <!-- <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script> -->
+
+<script src="//d3js.org/topojson.v1.min.js"></script>
+<script src="choropleth.js"></script> 
+<script src="d3-tip.js"></script> 
+ <!-- <script src="testpiechart.js"></script>
+ <script src="hbarchart.js"></script> -->
+<!-- <script src="piechart.js"></script>  -->
+
+<!-- <script src="../static/scatterplot.js"></script> -->
 
 <!-- <script src="../static/v_barchart.js"></script>  -->
- <script src="../static/h_barchart.js"></script>
+<!-- <script src="scatterplot.js"></script> -->
+<!-- <script src="choropleth.js"></script>  -->
 <!-- <script src="../static/areachart.js"></script> -->
-<script src="../static/multi-linechart.js"></script>
 
-<script src="../static/pcp.js"></script>
+
+<!-- <script src="../static/pcp.js"></script> -->
 <!-- <script src="../static/index.js"></script> -->
 
-<script>
-
-  $.ajax({
-           type: "GET",
-           url: "/top10states",
-           traditional: "true",
-           dataType: "json",
-           async : false,
-           success: function (data) {
-
-        console.log(data)
-        console.log(data.states)
-        console.log(data.killingcount)
-        hbarchart(data.data);
-      },error: function(error){
-        console.log("Yep, BarChart error ",error);
-      }
-           }) ;
-
-
-  </script>
 
 </html>
