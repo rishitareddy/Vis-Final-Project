@@ -1,5 +1,10 @@
+function drawChoropleth(){
+
 var width = 400;
     height = 300;
+
+    d3.select("#vis").select("svg").remove();
+    usa = "", val = ""
 
 var tip = d3.tip()
   .attr('class', 'd3-tip')
@@ -14,6 +19,8 @@ var tip = d3.tip()
            return d.properties.name + ": No data.";
        }
   })
+
+
 
 
 var svg1 = d3.select('#vis').append('svg')
@@ -33,11 +40,13 @@ var colorScale = d3.scaleLinear().range(["#D4EEFF", "#0099FF"]).interpolate(d3.i
 
 var countryById = d3.map();
 
+if (usa == "" | val == "" ){
 // we use queue because we have 2 data files to load.
 queue()
     .defer(d3.json, "static/us-states.json")
-    .defer(d3.csv, "static/statesdata.csv", typeAndSet) // process
+    .defer(d3.csv, "static/statesdata.csv"+'?' + Math.floor(Math.random() * 1000), typeAndSet) // process
     .await(loaded);
+}
 
 function typeAndSet(d) {
     d.value = +d.value;
@@ -59,8 +68,8 @@ function getColor(d) {
 
 function loaded(error, usa, value) {
 
-    console.log(usa);
-    console.log(value);
+    console.log("usa" , usa);
+    console.log("value", value);
 
     colorScale.domain(d3.extent(value, function(d) {return d.value;}));
 
@@ -88,10 +97,12 @@ function loaded(error, usa, value) {
 
             console.log("In on click ", d.properties.name);
 
+
+
             json_dictionary = {state : d.properties.name, race: 'Black'}
 
             // resp = ""
-            var jqxhr = $.ajax({
+            var multiLine = $.ajax({
                      type: "POST",
                      contentType: "text/html;charset=utf-8",
                      url: "/get_top_pd",
@@ -99,22 +110,30 @@ function loaded(error, usa, value) {
                      data : JSON.stringify(json_dictionary),
                      dataType: "application/json",
                      async : false
-                    //  success: function (response) {
-                    //         dat = response.multi;
-                    //         ext += response.extent
-                    //         variable = response.variable
-                    //         console.log("Data ", response);
-                    //         resp = response
-                    //     }  ,error: function(error){
-                    //                 console.log("Multiline chart error ",error);
-                    //               }
 
                     }) ;
-                    var response = {valid: jqxhr.statusText,  data: jqxhr.responseText};
+                    var multiLineResponse = {valid: multiLine.statusText,  data: multiLine.responseText};
 
-                    var obj = JSON.parse(response.data)
+                    var obj = JSON.parse(multiLineResponse.data)
                     console.log(obj.multi)
-                    drawMultiLineChart(obj)         
+                    drawMultiLineChart(obj) 
+                    
+                    
+            var hBar = $.ajax({
+                type: "POST",
+                contentType: "text/html;charset=utf-8",
+                url: "/get_abbreviation",
+                traditional: "true",
+                data : d.properties.name,
+                dataType: "string",
+                async : false
+
+                }) ;
+                var hBarResponse = {valid: hBar.statusText,  data: hBar.responseText};
+
+                console.log(hBarResponse.data)
+                hbarchart(hBarResponse.data)
+
         })
         .attr('fill', function(d,i) {
             return getColor(d);
@@ -137,4 +156,4 @@ function loaded(error, usa, value) {
 
 }
 
-
+}

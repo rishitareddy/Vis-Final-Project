@@ -53,12 +53,12 @@ var line = d3.line(),
 
 var Categorical = ['Geography','Encounter_Type','Victim_race'];
 
-var myArray = ['Geography','State', 'Victim_age', 'Victim_race', 'Encounter_Type'];
+var myArray = ['Geography','State', 'Year', 'Victim_age', 'Victim_race', 'Encounter_Type',];
 
 // var myArray = ['Geography', 'Victim_age', 'Victim_race', 'State'];
 
 
-  d3.csv("https://raw.githubusercontent.com/rishitareddy/Vis-Final-Project/master/templates/PFDataset2.csv?token=AF5FPAVX4WY2JYZ653GP4VLAUIHDS", function(data) {
+  d3.csv("static/PFDataset3.csv", function(data) {
 
   // d3.csv("../templates/PFDataset2.csv", function(data) {
 
@@ -67,6 +67,10 @@ var myArray = ['Geography','State', 'Victim_age', 'Victim_race', 'Encounter_Type
     if(d == 'State'){
       y[d] = d3.scalePoint().domain(states)
                                         .range([height, 0])
+    }
+    else if(d == 'Year'){
+      var parseDate = d3.timeParse("%Y");
+      y[d] = d3.scaleTime().domain([parseDate(new Date("2013")), parseDate(new Date("2021"))]).range([height, 0])
     }
     else if(Categorical.includes(d)){
 

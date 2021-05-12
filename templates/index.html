@@ -16,24 +16,23 @@
   <!-- <div id="my_barchart"></div>  -->
 
   <!-- <div id="hdata"></div> -->
-  <!-- <div id="mylinechart"></div> -->
-  <div id = "mypcp"></div>
+  <!-- <div id="horizontalbarchart"></div> -->
  <div style="display: flex;justify-content: center;">
     <div style="display:inline-block;">
       <div id="vis"></div>
     </div>
     <div style="display:inline-block;">
-      <div id="mypcp"></div>
+      <div id="horizontalbarchart"></div>
     </div>
     <div style="display:inline-block;"></div>
     <div id="mylinechart"></div>
     </div>
   </div>
   <div style="display: flex;justify-content: center;">
-    <!-- <div style="display:inline-block;">
-      <div id="vis"></div>
-    </div>
     <div style="display:inline-block;">
+      <div id="mypcp"></div>
+    </div>
+    <!-- <div style="display:inline-block;">
       <div id="my_dataviz"></div>
     </div>
     <div style="display:inline-block;"></div> -->
@@ -82,8 +81,8 @@
 <script src="../static/choropleth.js"></script> 
 <script src="../static/d3-tip.js"></script> 
  <!-- <script src="testpiechart.js"></script> -->
- <!-- <script src="hbarchart.js"></script> 
-<script src="piechart.js"></script>  -->
+ <script src="../static/h_barchart.js"></script>
+<!-- <script src="piechart.js"></script>  -->
 
 <!-- <script src="../static/scatterplot.js"></script> -->
 
@@ -93,7 +92,7 @@
 <script src="../static/multi-linechart.js"></script>
 
 
-<!-- <script src="../static/pcp.js"></script> -->
+<script src="../static/pcp.js"></script>
 <!-- <script src="../static/index.js"></script> -->
 
 <script>
@@ -113,8 +112,28 @@
 
                     var obj = JSON.parse(response.data)
                     console.log(obj.multi)
-                    drawMultiLineChart(obj)            
-                      })
+                    drawMultiLineChart(obj)   
+         
+                    hbarchart('CA')
+
+            var choro  = $.ajax({
+                      type: "GET",
+                      url: "/get_choro_data",
+                      traditional: "true",
+                      dataType: "string",
+                      async : false,
+                      success: function (data) {
+                          drawChoropleth() 
+                          console.log(data, "Successful");
+                      },error: function(error){
+                        drawChoropleth()
+                        console.log(error, "Unsuccessful");
+                      }              
+                    }) ;
+console.log("Uncessful choro");
+                                  })
+   
+  
 
 </script>
 

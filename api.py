@@ -10,7 +10,7 @@ from collections import Counter
 from collections import OrderedDict
 import datetime
 import json
-import logging
+import csv
 
 app = Flask(__name__)
 
@@ -135,7 +135,7 @@ def getTopPD():
 
     groupedData = pdDf.groupby(['Year','Agency_responsible_for_death']).count().unstack(0).fillna(0).reset_index()
 
-    print(groupedData)
+    # print(groupedData)
 
     data = []
     i = 0
@@ -172,9 +172,51 @@ def getTopPD():
     elif race != "":
         data_dict["variable"] = race
         
-    print(data)
+    # print(data)
 
     return jsonify(data_dict)
 
+
+
+@app.route("/get_choro_data",methods = ['POST','GET'])
+def getChoroData(): 
+
+    attributes = ['State_Full','Victim_race']
+    dfChoro = pd.DataFrame(data=pf3, columns = attributes)
+    if request.method == 'POST':
+        race = (request.data).decode("utf-8") 
+        print("Race is ", race)
+        dfChoro = dfChoro.loc[dfChoro['Victim_race'] == race]
+
+    stateList = dfChoro['State_Full'].tolist()
+    stateDict = dict(Counter(stateList).most_common(51))
+
+    print(stateDict)
+
+    stateCsv = open("static/statesdata.csv", "w",newline='')
+
+    writer = csv.writer(stateCsv)
+
+    writer.writerow(['state','value'])
+    for key, value in stateDict.items():
+        writer.writerow([key, value])
+    stateCsv.close()
+
+    return "boop"
+
+
+@app.route("/get_abbreviation", methods = ['POST'])
+def getabbreviatedState():
+    stateName = (request.data).decode("utf-8") 
+    print("stateName is ", stateName)
+
+    attributes = ['State_Full','State']
+    dfState = pd.DataFrame(data=pf3, columns = attributes)
+    abbreviation = dfState.loc[dfState['State_Full'] == stateName, 'State'].iloc[0]
+
+    print("Abbreviation ", abbreviation)
+
+    return abbreviation
+
 if __name__ == '__main__':
-    app.run(debug=True, port = 5302)
+    app.run(debug=True, port = 5346)

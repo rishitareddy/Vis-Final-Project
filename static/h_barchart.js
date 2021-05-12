@@ -1,4 +1,9 @@
-function hbarchart(data){
+function hbarchart(state){
+
+console.log("In hbarchart woohoo", state);
+
+d3.select("#horizontalbarchart").select("svg").remove();
+
 
 var margin = {top: 20, right: 30, bottom: 40, left: 90},
     width = 350 - margin.left - margin.right,
@@ -14,7 +19,7 @@ var svg = d3.select("#horizontalbarchart")
           "translate(" + margin.left + "," + margin.top + ")");
 
 // Parse the Data
-d3.csv("racecount1.csv", function(data) {
+d3.csv("static/racecount1.csv", function(data) {
 
   // Add X axis
   var x = d3.scaleLinear()
@@ -42,8 +47,47 @@ d3.csv("racecount1.csv", function(data) {
     .append("rect")
     .attr("x", x(0) )
     .attr("y", function(d) { return y(d.Race); })
-    .attr("width", function(d) { return x(d.CA); })
+    .attr("width", function(d) { return x(d[state]); })
     .attr("height", y.bandwidth() )
+    .on("click",function(d, i) {
+
+      console.log("In on click bar", d.Race);
+
+      $.ajax({
+               type: "POST",
+               contentType: "text/html;charset=utf-8",
+               url: "/get_choro_data",
+               traditional: "true",
+               data: d.Race,
+               dataType: "string",
+               async : false,
+               success: function (data) {
+                drawChoropleth() 
+                console.log(data, " barchart successful");
+            },error: function(error){
+              drawChoropleth()
+              console.log(error, "barchart unsuccessful");
+            }              
+          }) 
+          
+        json_dictionary = {state : '', race: d.Race}
+
+          // resp = ""
+          var jqxhr = $.ajax({
+                    type: "POST",
+                    contentType: "text/html;charset=utf-8",
+                    url: "/get_top_pd",
+                    traditional: "true",
+                    data : JSON.stringify(json_dictionary),
+                    dataType: "application/json",
+                    async : false
+
+                  }) ;
+                  var response = {valid: jqxhr.statusText,  data: jqxhr.responseText};
+
+                  var obj = JSON.parse(response.data)
+                  drawMultiLineChart(obj)
+  })
     .attr("fill", "#5DADE2")
 
 
@@ -54,3 +98,4 @@ d3.csv("racecount1.csv", function(data) {
     // .attr("fill", "#69b3a2")
 
 })
+}
