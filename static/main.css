@@ -123,3 +123,41 @@ border-radius: 2px;
 }
 
 /* end of choropleth styling */
+
+/*styling for piechart*/
+
+  .pie {
+    margin: 20px;
+    /* float: left; */
+  }
+
+ /* svg {
+    float: left;
+  }  */
+
+  .legend {
+    float: left;
+    font-family: "Verdana";
+    font-size: 0.7em;
+  }
+
+  .pie text {
+    font-family: "Verdana";
+    fill: #000;
+  }
+
+  .pie .name-text {
+    font-size: 0.8em;
+  }
+
+  .pie .value-text {
+    font-size: 3em;
+  } 
+
+  /*for placing graphs side by side*/
+
+  /*pie chart styling */
+
+  .arc path {
+    stroke: #fff;
+  }
