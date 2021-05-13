@@ -17,6 +17,8 @@
 
   <!-- <div id="hdata"></div> -->
   <!-- <div id="horizontalbarchart"></div> -->
+  <button onClick=reset() >RESET BUTTON!!!</button>
+
  <div style="display: flex;justify-content: center;">
     <div style="display:inline-block;">
       <div id="vis"></div>
@@ -46,6 +48,7 @@
     </div>
   </div>
   </div>
+
 
 
 
@@ -111,61 +114,66 @@
 
 <script>
   $(document).ready(function(){
+        reset()
 
-    json_dictionary = {state : '', race: '', weapon : ''}
-            var jqxhr = $.ajax({
-                     type: "POST",
-                     contentType: "text/html;charset=utf-8",
-                     url: "/get_top_pd",
-                     traditional: "true",
-                     data : JSON.stringify(json_dictionary),
-                     dataType: "application/json",
-                     async : false
-                    }) ;
-                    var response = {valid: jqxhr.statusText,  data: jqxhr.responseText};
+    })
 
-                    var obj = JSON.parse(response.data)
-                    console.log(obj.multi)
-                    drawMultiLineChart(obj)
 
-                    hbarchart('All')
-                    drawPieChart('All')
+    function reset(){
+      json_dictionary = {state : '', race: '', weapon : ''}
+              var jqxhr = $.ajax({
+                       type: "POST",
+                       contentType: "text/html;charset=utf-8",
+                       url: "/get_top_pd",
+                       traditional: "true",
+                       data : JSON.stringify(json_dictionary),
+                       dataType: "application/json",
+                       async : false
+                      }) ;
+                      var response = {valid: jqxhr.statusText,  data: jqxhr.responseText};
 
-            var choro  = $.ajax({
-                      type: "GET",
-                      url: "/get_choro_data",
-                      traditional: "true",
-                      dataType: "string",
-                      async : false,
-                      success: function (data) {
+                      var obj = JSON.parse(response.data)
+                      console.log(obj.multi)
+                      drawMultiLineChart(obj)
+
+                      hbarchart('All')
+                      drawPieChart('All')
+
+              var choro  = $.ajax({
+                        type: "GET",
+                        url: "/get_choro_data",
+                        traditional: "true",
+                        dataType: "string",
+                        async : false,
+                        success: function (data) {
+                            drawChoropleth()
+                            console.log(data, "Successful");
+                        },error: function(error){
                           drawChoropleth()
-                          console.log(data, "Successful");
-                      },error: function(error){
-                        drawChoropleth()
-                        console.log(error, "Unsuccessful");
-                      }
-                    }) ;
-          console.log("Uncessful choro");
+                          console.log(error, "Unsuccessful");
+                        }
+                      }) ;
+            console.log("Uncessful choro");
 
 
-          var stats = $.ajax({
-            type: "POST",
-            contentType: "text/html;charset=utf-8",
-            url: "/get_death_count",
-            traditional: "true",
-            data : JSON.stringify(json_dictionary),
-            dataType: "application/json",
-            async : false
+            var stats = $.ajax({
+              type: "POST",
+              contentType: "text/html;charset=utf-8",
+              url: "/get_death_count",
+              traditional: "true",
+              data : JSON.stringify(json_dictionary),
+              dataType: "application/json",
+              async : false
 
-           }) ;
-           var statsResponse = {valid: stats.statusText,  data: stats.responseText};
+             }) ;
+             var statsResponse = {valid: stats.statusText,  data: stats.responseText};
 
-           var obj = JSON.parse(statsResponse.data)
-           document.getElementById("variableName").innerHTML="All killings from 2013 - 2021";
+             var obj = JSON.parse(statsResponse.data)
+             document.getElementById("variableName").innerHTML="All killings from 2013 - 2021";
 
-           document.getElementById("totalDeaths").innerHTML= 'Total deaths :' +obj.totalDeaths
-           document.getElementById("avoidableDeaths").innerHTML= 'Avoidable deaths : ' +obj.avoidableDeaths
-                                  })
+             document.getElementById("totalDeaths").innerHTML= 'Total deaths :' +obj.totalDeaths
+             document.getElementById("avoidableDeaths").innerHTML= 'Avoidable deaths : ' +obj.avoidableDeaths
+    }
 
 
 

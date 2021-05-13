@@ -280,4 +280,4 @@ def getDeathCount():
     return data_dict
 
 if __name__ == '__main__':
-    app.run(debug=True, port = 5392)
+    app.run(debug=True, port = 5393)
