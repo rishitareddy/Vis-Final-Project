@@ -11,7 +11,7 @@
 
 </head>
 
-<body> 
+<body>
 
   <!-- <div id="my_barchart"></div>  -->
 
@@ -37,9 +37,9 @@
     </div>
     <div style="display:inline-block;"></div>
   </div>
-  
 
- 
+
+
 
 <!-- Add 2 buttons -->
 <!-- <button onclick="update(data1)">Data 1</button>
@@ -49,27 +49,27 @@
 
 <!-- Create a div where the graph will take place -->
 
-<!--         
+<!--
  <button onclick="updatebarchart('var1')">Variable 1</button>
 <button onclick="updatebarchart('var2')">Variable 2</button>  -->
-          
-    
+
+
            <!-- <div id = "myscatterplot"></div>  -->
-         
-        
-    
+
+
+
 </body>
 
 
 
-    
+
 
 <!-- <script src="//d3js.org/d3.v3.min.js"></script> -->
 
  <!-- Color scale -->
  <!-- <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script> -->
 
- 
+
 
 <script src="https://d3js.org/d3.v4.js"></script>
 <script src="//d3js.org/queue.v1.min.js"></script>
@@ -83,16 +83,16 @@
  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
 
-<script src="../static/choropleth.js"></script> 
-<script src="../static/d3-tip.js"></script> 
+<script src="../static/choropleth.js"></script>
+<script src="../static/d3-tip.js"></script>
  <script src="../static/h_barchart.js"></script>
-<script src="../static/piechart.js"></script> 
+<script src="../static/piechart.js"></script>
 
 <!-- <script src="../static/scatterplot.js"></script> -->
 
 <!-- <script src="../static/v_barchart.js"></script>  -->
 <!-- <script src="scatterplot.js"></script> -->
-<script src="choropleth.js"></script> 
+<script src="choropleth.js"></script>
 <script src="../static/multi-linechart.js"></script>
 
 
@@ -102,7 +102,7 @@
 <script>
   $(document).ready(function(){
 
-    json_dictionary = {state : '', race: 'Black'}
+    json_dictionary = {state : '', race: '', weapon : 'Gun'}
             var jqxhr = $.ajax({
                      type: "POST",
                      contentType: "text/html;charset=utf-8",
@@ -110,15 +110,16 @@
                      traditional: "true",
                      data : JSON.stringify(json_dictionary),
                      dataType: "application/json",
-                     async : false                 
+                     async : false
                     }) ;
                     var response = {valid: jqxhr.statusText,  data: jqxhr.responseText};
 
                     var obj = JSON.parse(response.data)
                     console.log(obj.multi)
-                    drawMultiLineChart(obj)   
-         
+                    drawMultiLineChart(obj)
+
                     hbarchart('CA')
+                    drawPieChart('AL')
 
             var choro  = $.ajax({
                       type: "GET",
@@ -127,17 +128,17 @@
                       dataType: "string",
                       async : false,
                       success: function (data) {
-                          drawChoropleth() 
+                          drawChoropleth()
                           console.log(data, "Successful");
                       },error: function(error){
                         drawChoropleth()
                         console.log(error, "Unsuccessful");
-                      }              
+                      }
                     }) ;
 console.log("Uncessful choro");
                                   })
-   
-  
+
+
 
 </script>
 

@@ -1,6 +1,6 @@
-function hbarchart(state){
+function hbarchart(val){
 
-console.log("In hbarchart woohoo", state);
+console.log("In hbarchart woohoo", val);
 
 d3.select("#horizontalbarchart").select("svg").remove();
 
@@ -18,12 +18,27 @@ var svg = d3.select("#horizontalbarchart")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
-// Parse the Data
-d3.csv("static/racecount1.csv", function(data) {
+var weapon = ["Blunt object","Explosives","Gun","Knife","No object","Other","Vehicle"];
 
+if(weapon.includes(val)){
+  csvFile = "static/racecount2.csv"
+}else{
+  csvFile = "static/racecount1.csv"
+}
+
+
+console.log(csvFile)
+
+// Parse the Data
+d3.csv(csvFile, function(data) {
+
+
+  console.log("Inside hbar ",data)
   // Add X axis
   var x = d3.scaleLinear()
-    .domain([0, 100])
+  .domain([0,d3.max(data, function (d) {return d[val];}) + 20])
+
+    // .domain([0, 100])
     .range([ 0, width]);
   svg.append("g")
     .attr("transform", "translate(0," + height + ")")
@@ -47,30 +62,33 @@ d3.csv("static/racecount1.csv", function(data) {
     .append("rect")
     .attr("x", x(0) )
     .attr("y", function(d) { return y(d.Race); })
-    .attr("width", function(d) { return x(d[state]); })
+    .attr("width", function(d) { return x(d[val]); })
     .attr("height", y.bandwidth() )
     .on("click",function(d, i) {
 
       console.log("In on click bar", d.Race);
+
+      drawPieChart(d.Race)
+      json_dictionary = {state : '', race: d.Race, weapon : ''}
+
 
       $.ajax({
                type: "POST",
                contentType: "text/html;charset=utf-8",
                url: "/get_choro_data",
                traditional: "true",
-               data: d.Race,
-               dataType: "string",
+               data: JSON.stringify(json_dictionary),
+               dataType: "application/json",
                async : false,
                success: function (data) {
-                drawChoropleth() 
+                drawChoropleth()
                 console.log(data, " barchart successful");
             },error: function(error){
               drawChoropleth()
               console.log(error, "barchart unsuccessful");
-            }              
-          }) 
-          
-        json_dictionary = {state : '', race: d.Race}
+            }
+          })
+
 
           // resp = ""
           var jqxhr = $.ajax({
@@ -87,6 +105,7 @@ d3.csv("static/racecount1.csv", function(data) {
 
                   var obj = JSON.parse(response.data)
                   drawMultiLineChart(obj)
+
   })
     .attr("fill", "#5DADE2")
 

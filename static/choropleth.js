@@ -99,7 +99,7 @@ function loaded(error, usa, value) {
 
 
 
-            json_dictionary = {state : d.properties.name, race: 'Black'}
+            json_dictionary = {state : d.properties.name, race: '', weapon : ''}
 
             // resp = ""
             var multiLine = $.ajax({
@@ -116,9 +116,9 @@ function loaded(error, usa, value) {
 
                     var obj = JSON.parse(multiLineResponse.data)
                     console.log(obj.multi)
-                    drawMultiLineChart(obj) 
-                    
-                    
+                    drawMultiLineChart(obj)
+
+
             var hBar = $.ajax({
                 type: "POST",
                 contentType: "text/html;charset=utf-8",
@@ -133,6 +133,7 @@ function loaded(error, usa, value) {
 
                 console.log(hBarResponse.data)
                 hbarchart(hBarResponse.data)
+                drawPieChart(hBarResponse.data)
 
         })
         .attr('fill', function(d,i) {

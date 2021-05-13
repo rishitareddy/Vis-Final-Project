@@ -28,7 +28,6 @@ df_PdKillings = pd.DataFrame(data=Police_Killings_By_PD, columns = attributes_by
 
 pf3 = pd.read_csv('templates/PFDataset3.csv')
 
-
 @app.route('/')
 def home():
 
@@ -96,13 +95,16 @@ def getSortedHomicideRates():
 
 
 @app.route("/get_top_pd",methods = ['POST','GET'])
-def getTopPD(): 
+def getTopPD():
     state = 'TX'
     race = 'White'
+    weapon = 'Gun'
     if request.method == 'POST':
         val = json.loads(request.data)
         state = val['state']
         race = val['race']
+        weapon = val['weapon']
+
         # t = 0
 
     if state != "":
@@ -115,6 +117,11 @@ def getTopPD():
         attributes = ['Victim_race','Agency_responsible_for_death', 'Year']
         df3 = pd.DataFrame(data=pf3, columns = attributes)
         pdDf = df3.loc[df3['Victim_race'] == race]
+    elif weapon != "":
+            print("In race ", race)
+            attributes = ['Alleged_Weapon','Agency_responsible_for_death', 'Year']
+            df3 = pd.DataFrame(data=pf3, columns = attributes)
+            pdDf = df3.loc[df3['Alleged_Weapon'] == weapon]
     # else:
     #     t = 1
     #     attributes = ['Agency_responsible_for_death', 'Year']
@@ -135,7 +142,6 @@ def getTopPD():
 
     groupedData = pdDf.groupby(['Year','Agency_responsible_for_death']).count().unstack(0).fillna(0).reset_index()
 
-    # print(groupedData)
 
     data = []
     i = 0
@@ -153,6 +159,8 @@ def getTopPD():
                 y_dict["count"] = int(groupedData.iloc[i]['State_Full'].iloc[j])
             elif race != "":
                 y_dict["count"] = int(groupedData.iloc[i]['Victim_race'].iloc[j])
+            elif weapon != "":
+                y_dict["count"] = int(groupedData.iloc[i]['Alleged_Weapon'].iloc[j])
             values.append(y_dict)
 
             if max_count < y_dict["count"]:
@@ -162,7 +170,7 @@ def getTopPD():
         data.append(a_dict)
         i += 1
 
-    
+
 
     data_dict = {}
     data_dict["multi"] = data
@@ -171,7 +179,9 @@ def getTopPD():
         data_dict["variable"] = state
     elif race != "":
         data_dict["variable"] = race
-        
+    elif weapon != "":
+        data_dict["variable"] = weapon
+
     # print(data)
 
     return jsonify(data_dict)
@@ -179,17 +189,24 @@ def getTopPD():
 
 
 @app.route("/get_choro_data",methods = ['POST','GET'])
-def getChoroData(): 
+def getChoroData():
 
     attributes = ['State_Full','Victim_race']
     dfChoro = pd.DataFrame(data=pf3, columns = attributes)
     if request.method == 'POST':
-        race = (request.data).decode("utf-8") 
-        print("Race is ", race)
-        dfChoro = dfChoro.loc[dfChoro['Victim_race'] == race]
+        val = json.loads(request.data)
+        race = val['race']
+        weapon = val['weapon']
+        if race != '':
+            dfChoro = dfChoro.loc[dfChoro['Victim_race'] == race]
+        elif weapon != '':
+            attributes = ['State_Full','Alleged_Weapon']
+            dfChoro = pd.DataFrame(data=pf3, columns = attributes)
+            dfChoro = dfChoro.loc[dfChoro['Alleged_Weapon'] == weapon]
+
 
     stateList = dfChoro['State_Full'].tolist()
-    stateDict = dict(Counter(stateList).most_common(51))
+    stateDict = dict(Counter(stateList))
 
     print(stateDict)
 
@@ -207,7 +224,7 @@ def getChoroData():
 
 @app.route("/get_abbreviation", methods = ['POST'])
 def getabbreviatedState():
-    stateName = (request.data).decode("utf-8") 
+    stateName = (request.data).decode("utf-8")
     print("stateName is ", stateName)
 
     attributes = ['State_Full','State']
@@ -217,6 +234,5 @@ def getabbreviatedState():
     print("Abbreviation ", abbreviation)
 
     return abbreviation
-
 if __name__ == '__main__':
-    app.run(debug=True, port = 5346)
+    app.run(debug=True, port = 5382)

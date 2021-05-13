@@ -51,7 +51,7 @@ var line = d3.line(),
     background,
     foreground;
 
-var Categorical = ['Geography','Encounter_Type','Victim_race'];
+var Categorical = ['Geography','Encounter_Type','Victim_race','Year'];
 
 var myArray = ['Geography','State', 'Year', 'Victim_age', 'Victim_race', 'Encounter_Type',];
 
