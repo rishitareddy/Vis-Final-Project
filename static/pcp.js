@@ -53,7 +53,7 @@ var line = d3.line(),
 
 var Categorical = ['Geography','Encounter_Type','Victim_race','Year'];
 
-var myArray = ['Geography','State', 'Year', 'Victim_age', 'Victim_race', 'Encounter_Type',];
+var myArray = ['Geography','State', 'Victim_age', 'Victim_race', 'Encounter_Type',];
 
 // var myArray = ['Geography', 'Victim_age', 'Victim_race', 'State'];
 
@@ -68,10 +68,10 @@ var myArray = ['Geography','State', 'Year', 'Victim_age', 'Victim_race', 'Encoun
       y[d] = d3.scalePoint().domain(states)
                                         .range([height, 0])
     }
-    else if(d == 'Year'){
-      var parseDate = d3.timeParse("%Y");
-      y[d] = d3.scaleTime().domain([parseDate(new Date("2013")), parseDate(new Date("2021"))]).range([height, 0])
-    }
+    // else if(d == 'Year'){
+    //   var parseDate = d3.timeParse("%Y");
+    //   y[d] = d3.scaleTime().domain([parseDate(new Date("2013")), parseDate(new Date("2021"))]).range([height, 0])
+    // }
     else if(Categorical.includes(d)){
 
       y[d] = d3.scalePoint().domain(data.map(item => item[d]))

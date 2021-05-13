@@ -107,7 +107,7 @@
 <script>
   $(document).ready(function(){
 
-    json_dictionary = {state : '', race: '', weapon : 'Gun'}
+    json_dictionary = {state : '', race: '', weapon : ''}
             var jqxhr = $.ajax({
                      type: "POST",
                      contentType: "text/html;charset=utf-8",
@@ -123,8 +123,8 @@
                     console.log(obj.multi)
                     drawMultiLineChart(obj)
 
-                    hbarchart('CA')
-                    drawPieChart('AL')
+                    hbarchart('All')
+                    drawPieChart('All')
 
             var choro  = $.ajax({
                       type: "GET",
