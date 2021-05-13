@@ -130,6 +130,8 @@ console.log("pie", csvFile);
 
       console.log("In on click ", d.data.Alleged_Weapon);
 
+      document.getElementById("variableName").innerHTML=d.data.Alleged_Weapon;
+
       json_dictionary = {state :'', race: '', weapon : d.data.Alleged_Weapon}
 
       // resp = ""
@@ -167,6 +169,22 @@ console.log("pie", csvFile);
                     }
                   })
           hbarchart(d.data.Alleged_Weapon)
+
+          var stats = $.ajax({
+            type: "POST",
+            contentType: "text/html;charset=utf-8",
+            url: "/get_death_count",
+            traditional: "true",
+            data : JSON.stringify(json_dictionary),
+            dataType: "application/json",
+            async : false
+
+           }) ;
+           var statsResponse = {valid: stats.statusText,  data: stats.responseText};
+
+           var obj = JSON.parse(statsResponse.data)
+           document.getElementById("totalDeaths").innerHTML= 'Total deaths :' +obj.totalDeaths
+           document.getElementById("avoidableDeaths").innerHTML= 'Avoidable deaths : ' +obj.avoidableDeaths
 
 
 

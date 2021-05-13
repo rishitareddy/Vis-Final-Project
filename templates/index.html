@@ -39,6 +39,11 @@
     <div id='grid-container'>
         <div id='grid-chart'></div>
     </div>
+    <div id='stats'>
+        <p id="variableName"></p>
+        <p id="totalDeaths"></p>
+        <p id="avoidableDeaths"></p>
+    </div>
   </div>
   </div>
 
@@ -140,8 +145,30 @@
                         console.log(error, "Unsuccessful");
                       }
                     }) ;
-console.log("Uncessful choro");
+          console.log("Uncessful choro");
+
+
+          var stats = $.ajax({
+            type: "POST",
+            contentType: "text/html;charset=utf-8",
+            url: "/get_death_count",
+            traditional: "true",
+            data : JSON.stringify(json_dictionary),
+            dataType: "application/json",
+            async : false
+
+           }) ;
+           var statsResponse = {valid: stats.statusText,  data: stats.responseText};
+
+           var obj = JSON.parse(statsResponse.data)
+           document.getElementById("variableName").innerHTML="All killings from 2013 - 2021";
+
+           document.getElementById("totalDeaths").innerHTML= 'Total deaths :' +obj.totalDeaths
+           document.getElementById("avoidableDeaths").innerHTML= 'Avoidable deaths : ' +obj.avoidableDeaths
                                   })
+
+
+
 
 
 

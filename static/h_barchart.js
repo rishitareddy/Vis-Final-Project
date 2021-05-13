@@ -71,6 +71,8 @@ d3.csv(csvFile, function(data) {
       drawPieChart(d.Race)
       json_dictionary = {state : '', race: d.Race, weapon : ''}
 
+      document.getElementById("variableName").innerHTML=d.Race;
+
 
       $.ajax({
                type: "POST",
@@ -105,6 +107,22 @@ d3.csv(csvFile, function(data) {
 
                   var obj = JSON.parse(response.data)
                   drawMultiLineChart(obj)
+
+          var stats = $.ajax({
+            type: "POST",
+            contentType: "text/html;charset=utf-8",
+            url: "/get_death_count",
+            traditional: "true",
+            data : JSON.stringify(json_dictionary),
+            dataType: "application/json",
+            async : false
+
+           }) ;
+           var statsResponse = {valid: stats.statusText,  data: stats.responseText};
+
+           var obj = JSON.parse(statsResponse.data)
+           document.getElementById("totalDeaths").innerHTML= 'Total deaths :' +obj.totalDeaths
+           document.getElementById("avoidableDeaths").innerHTML= 'Avoidable deaths : ' +obj.avoidableDeaths
 
   })
     .attr("fill", "#5DADE2")

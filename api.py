@@ -238,5 +238,46 @@ def getabbreviatedState():
     abbreviation = dfState.loc[dfState['State_Full'] == stateName, 'State'].iloc[0]
 
     return abbreviation
+
+
+@app.route("/get_death_count", methods = ['POST'])
+def getDeathCount():
+    state = ''
+    race = ''
+    weapon = ''
+
+    if request.method == 'POST':
+        val = json.loads(request.data)
+        state = val['state']
+        race = val['race']
+        weapon = val['weapon']
+
+    attributes = ['State_Full','Victim_race', 'Alleged_Weapon','Encounter_Type']
+    df3 = pd.DataFrame(data=pf3, columns = attributes)
+
+    if state != "":
+        print("In state ", state)
+        totalDeaths = (df3['State_Full'] == state).sum()
+        df3 = df3.loc[df3['State_Full'] == state]
+    elif race != "":
+        print("In race ", race)
+        totalDeaths = (df3['Victim_race'] == race).sum()
+        df3 = df3.loc[df3['Victim_race'] == race]
+    elif weapon != "":
+        print("In weapon ", weapon)
+        totalDeaths = (df3['Alleged_Weapon'] == weapon).sum()
+        df3 = df3.loc[df3['Alleged_Weapon'] == weapon]
+    else:
+        totalDeaths = df3.shape[0]
+
+    avoidableDeaths = (df3['Encounter_Type'] == 'Welfare Check').sum()
+
+    data_dict = {}
+    data_dict["totalDeaths"] = int(totalDeaths)
+    data_dict["avoidableDeaths"] = int(avoidableDeaths)
+    print(data_dict)
+
+    return data_dict
+
 if __name__ == '__main__':
-    app.run(debug=True, port = 5388)
+    app.run(debug=True, port = 5392)

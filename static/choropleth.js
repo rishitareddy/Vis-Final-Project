@@ -129,11 +129,29 @@ function loaded(error, usa, value) {
                 async : false
 
                 }) ;
-                var hBarResponse = {valid: hBar.statusText,  data: hBar.responseText};
+                var fullStateName = {valid: hBar.statusText,  data: hBar.responseText};
 
-                console.log(hBarResponse.data)
-                hbarchart(hBarResponse.data)
-                drawPieChart(hBarResponse.data)
+                console.log(fullStateName.data)
+                hbarchart(fullStateName.data)
+                drawPieChart(fullStateName.data)
+
+                document.getElementById("variableName").innerHTML=fullStateName.data;
+
+                var stats = $.ajax({
+                  type: "POST",
+                  contentType: "text/html;charset=utf-8",
+                  url: "/get_death_count",
+                  traditional: "true",
+                  data : JSON.stringify(json_dictionary),
+                  dataType: "application/json",
+                  async : false
+
+                 }) ;
+                 var statsResponse = {valid: stats.statusText,  data: stats.responseText};
+
+                 var obj = JSON.parse(statsResponse.data)
+                 document.getElementById("totalDeaths").innerHTML= 'Total deaths :' +obj.totalDeaths
+                 document.getElementById("avoidableDeaths").innerHTML= 'Avoidable deaths : ' +obj.avoidableDeaths
 
         })
         .attr('fill', function(d,i) {
