@@ -32,13 +32,6 @@ pf3 = pd.read_csv('templates/PFDataset3.csv')
 def home():
 
     return render_template('index.html')
-#
-# @app.route('/kmeans-labels', methods=['GET'])
-# def getKmeansClusters():
-#     clusterDict={}
-#     kmLabels = KMeans(n_clusters = 3).fit(df).labels_
-#     clusterDict["clusters"] = kmLabels.tolist()
-#     return jsonify(clusterDict)
 
 @app.route('/top10states',methods =['GET'])
 def  get_states():
@@ -145,8 +138,8 @@ def getTopPD():
         year = groupedData['Year'].tolist()
 
 
-    print(groupedData)
-    print(year)
+    # print(groupedData)
+    # print(year)
     data = []
     i = 0
     max_count = 0
@@ -202,6 +195,9 @@ def getChoroData():
 
     attributes = ['State_Full','Victim_race']
     dfChoro = pd.DataFrame(data=pf3, columns = attributes)
+
+    actualStateList = dfChoro['State_Full'].tolist()
+
     if request.method == 'POST':
         val = json.loads(request.data)
         race = val['race']
@@ -214,8 +210,10 @@ def getChoroData():
             dfChoro = dfChoro.loc[dfChoro['Alleged_Weapon'] == weapon]
 
 
-    stateList = dfChoro['State_Full'].tolist()
-    stateDict = dict(Counter(stateList))
+    filteredStateList = dfChoro['State_Full'].tolist()
+    stateDict = dict(Counter(filteredStateList))
+
+    remainingStates = list(set(actualStateList) - set(filteredStateList))
 
     stateCsv = open("static/statesdata.csv", "w",newline='')
 
@@ -224,6 +222,10 @@ def getChoroData():
     writer.writerow(['state','value'])
     for key, value in stateDict.items():
         writer.writerow([key, value])
+
+    for state in remainingStates:
+        writer.writerow([state,0])
+
     stateCsv.close()
 
     return "boop"
@@ -279,5 +281,49 @@ def getDeathCount():
 
     return data_dict
 
+
+
+
+
+
+@app.route("/get_geography_multiline",methods = ['GET','POST'])
+def getMultiGeography():
+
+    attributes = ['Geography', 'Year']
+    pdDf = pd.DataFrame(data=pf3, columns = attributes)
+    pdDf = pdDf.loc[pdDf['Geography'] != "Rural"]
+
+
+    groupedData = pdDf.groupby(['Geography']).size().reset_index(name = "Count")
+    sortedKillingsByPD = groupedData.sort_values(by=['Count'],ascending=False)
+    topPD = groupedData['Geography'].tolist()
+    topPD[topPD.index('Undetermined')] = 'Rural'
+    pdDf['Counter'] =1
+    groupedData = pdDf.groupby(['Geography','Year'])['Counter'].sum().reset_index()
+    counterList = groupedData['Counter'].tolist()
+
+    suburban = counterList[:8]
+    rural = counterList[9:17]
+    urban = counterList[18:26]
+
+    print("Geography ",groupedData)
+
+    data_dict = {}
+
+    suburban[:] = [x / 50 for x in suburban]
+
+    urban[:] = [x/25 for x in urban]
+
+    print(suburban)
+    print(rural)
+    print(urban)
+
+    data_dict["suburban"] = suburban
+    data_dict["rural"] = rural
+    data_dict["urban"] = urban
+
+    return jsonify(data_dict)
+
+
 if __name__ == '__main__':
-    app.run(debug=True, port = 5393)
+    app.run(debug=True, port = 5529)

@@ -2,33 +2,32 @@ svg {
   font-family: Sans-Serif, Arial;
 }
 .line {
-stroke-width: 2;
-fill: none;
+  stroke-width: 2;
+  fill: none;
 }
 
 .axis path {
-stroke: black;
-fill: none;
+  stroke: black;
+  fill: none;
 }
 
 .text {
-font-size: 12px;
+  font-size: 12px;
 }
 
 .title-text {
-font-size: 12px;
+  font-size: 12px;
 }
 
 .background path {
-fill: none;
-stroke: #ddd;
-shape-rendering: crispEdges;
+  fill: none;
+  stroke: #ddd;
+  shape-rendering: crispEdges;
 }
 
 .foreground path {
-fill: none;
+  fill: none;
 }
-
 
 /* beginning of choropleth style */
 body {
@@ -37,19 +36,19 @@ body {
   /* padding: 40px; */
 }
 
-a{
-color: #333399;
+a {
+  color: #333399;
 }
-a:hover{
-color: #FF0099;
+a:hover {
+  color: #ff0099;
 }
 
 .states {
   stroke: #fff;
-  stroke-width:1px;
+  stroke-width: 1px;
 }
-.states:hover{
-opacity: .6;
+.states:hover {
+  opacity: 0.6;
 }
 
 .legendLinear text {
@@ -63,20 +62,19 @@ color: #fff;
 border-radius: 2px;
 } */
 
-
 .d3-tip {
   line-height: 1.5;
   font-weight: 400;
-  font-family:"avenir next", Arial, sans-serif;
+  font-family: "avenir next", Arial, sans-serif;
   padding: 6px;
   background: rgba(0, 0, 0, 0.6);
-  color: #FFA500;
+  color: #FEEBE6;
   border-radius: 1px;
   pointer-events: none;
 }
 
 /* Creates a small triangle extender for the tooltip */
-.d3-tip:after {      
+.d3-tip:after {
   box-sizing: border-box;
   display: inline;
   font-size: 8px;
@@ -85,7 +83,6 @@ border-radius: 2px;
   color: rgba(0, 0, 0, 0.6);
   position: absolute;
   pointer-events: none;
-
 }
 
 /* Northward tooltips */
@@ -126,38 +123,64 @@ border-radius: 2px;
 
 /*styling for piechart*/
 
-  .pie {
-    margin: 20px;
-    /* float: left; */
-  }
+.pie {
+  margin: 20px;
+  /* float: left; */
+}
 
- /* svg {
+/* svg {
     float: left;
   }  */
 
-  .legend {
-    float: left;
-    font-family: "Verdana";
-    font-size: 0.7em;
-  }
+.legend {
+  float: left;
+  font-family: "Verdana";
+  font-size: 0.5em;
+}
 
-  .pie text {
-    font-family: "Verdana";
-    fill: #000;
-  }
+.pie text {
+  font-family: "Verdana";
+  fill: #000;
+}
 
-  .pie .name-text {
-    font-size: 0.8em;
-  }
+.pie .name-text {
+  font-size: 0.5em;
+}
 
-  .pie .value-text {
-    font-size: 3em;
-  } 
+.pie .value-text {
+  font-size: 1em;
+}
 
-  /*for placing graphs side by side*/
+/*for placing graphs side by side*/
 
-  /*pie chart styling */
+/*pie chart styling */
 
-  .arc path {
-    stroke: #fff;
-  }
+.arc path {
+  stroke: #fff;
+}
+
+.colD {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  background-color: #000;
+}
+
+.colD div {
+  display: block;
+}
+
+/*button styling */
+
+.button {
+  background-color: #e7e7e7;
+  color: black; /* Gray */
+  border: none;
+  padding: 5px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}

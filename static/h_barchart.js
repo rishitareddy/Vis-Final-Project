@@ -6,8 +6,8 @@ d3.select("#horizontalbarchart").select("svg").remove();
 
 
 var margin = {top: 20, right: 30, bottom: 40, left: 90},
-    width = 350 - margin.left - margin.right,
-    height = 275 - margin.top - margin.bottom;
+    width = 275 - margin.left - margin.right,
+    height = 230 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 var svg = d3.select("#horizontalbarchart")
@@ -26,20 +26,30 @@ if(weapon.includes(val)){
   csvFile = "static/racecount1.csv"
 }
 
+var colorScale = d3.scaleOrdinal(d3.schemeReds[4]);
 
 console.log(csvFile)
 
 // Parse the Data
 d3.csv(csvFile, function(data) {
 
+  data.forEach(function(d) {
+    d.val = +d[val];
+  });
+
+ console.log("Inside hbar ",data)
+ // Add X axis
+ var x = d3.scaleLinear()
+ .domain([0,d3.max(data, function (d) {
+   console.log(d.val)
+   return d.val;}) + 20])
+   .range([ 0, width]);
+  data.sort(function(a, b) {
+    return a[val] - b[val];
+  });
 
   console.log("Inside hbar ",data)
-  // Add X axis
-  var x = d3.scaleLinear()
-  .domain([0,d3.max(data, function (d) {return d[val];}) + 20])
 
-    // .domain([0, 100])
-    .range([ 0, width]);
   svg.append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x))
@@ -51,7 +61,7 @@ d3.csv(csvFile, function(data) {
   var y = d3.scaleBand()
     .range([ 0, height ])
     .domain(data.map(function(d) { return d.Race; }))
-    .padding(.1);
+    .padding(.3);
   svg.append("g")
     .call(d3.axisLeft(y))
 
@@ -60,9 +70,9 @@ d3.csv(csvFile, function(data) {
     .data(data)
     .enter()
     .append("rect")
-    .attr("x", x(0) )
+    // .attr("x", function(d) {return x(d[val]);} )
     .attr("y", function(d) { return y(d.Race); })
-    .attr("width", function(d) { return x(d[val]); })
+    .attr("width", function(d) { return x(d.val) })
     .attr("height", y.bandwidth() )
     .on("click",function(d, i) {
 
@@ -71,7 +81,7 @@ d3.csv(csvFile, function(data) {
       drawPieChart(d.Race)
       json_dictionary = {state : '', race: d.Race, weapon : ''}
 
-      document.getElementById("variableName").innerHTML=d.Race;
+      document.getElementById("variableName").innerHTML="Race : "+d.Race;
 
 
       $.ajax({
@@ -124,8 +134,12 @@ d3.csv(csvFile, function(data) {
            document.getElementById("totalDeaths").innerHTML= 'Total deaths :' +obj.totalDeaths
            document.getElementById("avoidableDeaths").innerHTML= 'Avoidable deaths : ' +obj.avoidableDeaths
 
+           hbarchart('All')
+
   })
-    .attr("fill", "#5DADE2")
+    // .attr("fill", "#5DADE2")
+
+    .style('fill',function(d,i){ return colorScale(i); })
 
 
     // .attr("x", function(d) { return x(d.Country); })

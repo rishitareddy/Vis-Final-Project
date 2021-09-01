@@ -3,6 +3,7 @@ function drawChoropleth(){
 var width = 400;
     height = 300;
 
+    d3.select(".d3-tip").remove()
     d3.select("#vis").select("svg").remove();
     usa = "", val = ""
 
@@ -30,13 +31,16 @@ var svg1 = d3.select('#vis').append('svg')
 svg1.call(tip);
 
 var projection = d3.geoAlbersUsa()
-    .scale(500) // mess with this if you want
+    .scale(350) // mess with this if you want
     .translate([width / 2, height / 2]);
 
 var path = d3.geoPath()
     .projection(projection);
 
-var colorScale = d3.scaleLinear().range(["#D4EEFF", "#0099FF"]).interpolate(d3.interpolateLab);
+// var colorScale = d3.scaleLinear().range(["#D4EEFF", "#0099FF"]).interpolate(d3.interpolateLab);
+
+var colorScale = d3.scaleLinear().range(["#FEEBE6", "#D74E43"]).interpolate(d3.interpolateLab);
+
 
 var countryById = d3.map();
 
@@ -135,7 +139,7 @@ function loaded(error, usa, value) {
                 hbarchart(fullStateName.data)
                 drawPieChart(fullStateName.data)
 
-                document.getElementById("variableName").innerHTML=fullStateName.data;
+                document.getElementById("variableName").innerHTML="State : " +fullStateName.data;
 
                 var stats = $.ajax({
                   type: "POST",
@@ -152,6 +156,21 @@ function loaded(error, usa, value) {
                  var obj = JSON.parse(statsResponse.data)
                  document.getElementById("totalDeaths").innerHTML= 'Total deaths :' +obj.totalDeaths
                  document.getElementById("avoidableDeaths").innerHTML= 'Avoidable deaths : ' +obj.avoidableDeaths
+
+                 var choro  = $.ajax({
+                    type: "GET",
+                    url: "/get_choro_data",
+                    traditional: "true",
+                    dataType: "string",
+                    async : false,
+                    success: function (data) {
+                        drawChoropleth()
+                        console.log(data, "Successful");
+                    },error: function(error){
+                      drawChoropleth()
+                      console.log(error, "Unsuccessful");
+                    }
+                  }) ;
 
         })
         .attr('fill', function(d,i) {

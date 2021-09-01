@@ -1,8 +1,8 @@
 function drawPieChart(val){
 
   var text = "";
-  var width = 200;
-  var height = 200;
+  var width = 150;
+  var height = 150;
   var thickness = 40;
   var duration = 750;
   var padding = 10;
@@ -17,7 +17,7 @@ function drawPieChart(val){
 
 
   var radius = Math.min(width - padding, height - padding) / 2;
-  var color = d3.scaleOrdinal(d3.schemeCategory10);
+  var color = d3.scaleOrdinal(d3.schemeReds[7]);
 
   var svg = d3
     .select("#piechart")
@@ -130,7 +130,7 @@ console.log("pie", csvFile);
 
       console.log("In on click ", d.data.Alleged_Weapon);
 
-      document.getElementById("variableName").innerHTML=d.data.Alleged_Weapon;
+      document.getElementById("variableName").innerHTML="Weapon : "+d.data.Alleged_Weapon;
 
       json_dictionary = {state :'', race: '', weapon : d.data.Alleged_Weapon}
 
@@ -186,7 +186,7 @@ console.log("pie", csvFile);
            document.getElementById("totalDeaths").innerHTML= 'Total deaths :' +obj.totalDeaths
            document.getElementById("avoidableDeaths").innerHTML= 'Avoidable deaths : ' +obj.avoidableDeaths
 
-
+           drawPieChart('All')
 
   })
     .on("touchstart", function(d) {
